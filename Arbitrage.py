@@ -1,8 +1,7 @@
 import itertools
 
 
-def calculate_arbitrage(liquidity: dict,
-                        token_perms: list) -> list[list[int, list]]:
+def calculate_arbitrage(liquidity: dict, token_perms: list) -> list:
     arbitrage = list()
     for tokens in token_perms:
         units = 5.0
