@@ -32,16 +32,17 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 > Since the change in token price is caused by the total movement of the entire current market, the Slippage in AMM refers to the difference between the expected price of a trade and the price at which the trade is executed. The final execution price vs. the intended execution price can be categorized as positive slippage, no slippage, or negative slippage.
 
 $$
-\text{Uniswap v2}
-\begin{cases}
-    x\cdot y=k \\
-    (x+dx)\cdot(y-dy)=k \\
-\end{cases} \\
-\text{Exchange volumn}\Rightarrow dy=\frac{y\cdot dx}{x+dx} \\
-\text{Price ratio of exchange}\Rightarrow\frac{dx}{dy}=\frac{x+dx}{y} \\
-\text{slippage price}=\underbrace{\frac{dx}{dy}}_{\text{Price ratio of exchange}}-\underbrace{\frac{x}{y}}_{\text{Price ratio before exchange}}=\frac{dx}{y}
+\begin{align*}
+    \text{Uniswap v2}&
+    \begin{cases}
+        x\cdot y=k \\
+        (x+dx)\cdot(y-dy)=k \\
+    \end{cases} \\
+    \text{Exchange volumn}&\Rightarrow dy=\frac{y\cdot dx}{x+dx} \\
+    \text{Price ratio of exchange}&\Rightarrow\frac{dx}{dy}=\frac{x+dx}{y} \\
+    \text{slippage price}&=\underbrace{\frac{dx}{dy}}_{\text{Price ratio of exchange}}-\underbrace{\frac{x}{y}}_{\text{Price ratio before exchange}}=\frac{dx}{y}
+\end{align*}
 $$
-
 
 > From the equation above, we know that the greater the transaction volume, the greater the slippage and the greater the deviation from the actual price. Besides, from the Uniswap V2 code below, we know that
 
@@ -134,7 +135,7 @@ $$
 liquidity = Math.min(amount0.mul(_totalSupply) / _reserve0, amount1.mul(_totalSupply) / _reserve1);
 ```
 
-> The liquidity that is credited to the user, and later minted to the users, is the lesser of two values, which is scaled by the totalSupply of LP tokens. The fact that the user will get the worse of the two ratios (amount0 / _reserve0 or amount1 / _reserve1) they provide incentivizes them to increase the supply of token0 and token1 without changing the ratio of token0 and token1, this can prevent the attacker to steal liquidity from other LP providers since adding liquidity should not affect price.
+> The liquidity that is credited to the user, and later minted to the users, is the lesser of two values, which is scaled by the totalSupply of LP tokens. The fact that the user will get the worse of the two ratios (amount0 / \_reserve0 or amount1 / \_reserve1) they provide incentivizes them to increase the supply of token0 and token1 without changing the ratio of token0 and token1, this can prevent the attacker to steal liquidity from other LP providers since adding liquidity should not affect price.
 
 ```solidity=
 // reference: https://github.com/Uniswap/v2-core/blob/master/contracts/UniswapV2Pair.sol
