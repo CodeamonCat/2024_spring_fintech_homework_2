@@ -32,16 +32,16 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 > Since the change in token price is caused by the total movement of the entire current market, the Slippage in AMM refers to the difference between the expected price of a trade and the price at which the trade is executed. The final execution price vs. the intended execution price can be categorized as positive slippage, no slippage, or negative slippage.
 
 $$
-\begin{aligned}
+\begin{align\*}
     \text{Uniswap v2}&
     \begin{cases}
-        x\cdot y=k \\
-        (x+dx)\cdot(y-dy)=k \\
-    \end{cases} \\
-    \text{Exchange volumn}&\Rightarrow dy=\frac{y\cdot dx}{x+dx} \\
-    \text{Price ratio of exchange}&\Rightarrow\frac{dx}{dy}=\frac{x+dx}{y} \\
+        x\cdot y=k \\\\\\
+        (x+dx)\cdot(y-dy)=k \\\\\\
+    \end{cases} \\\\\\
+    \text{Exchange volumn}&\Rightarrow dy=\frac{y\cdot dx}{x+dx} \\\\\\
+    \text{Price ratio of exchange}&\Rightarrow\frac{dx}{dy}=\frac{x+dx}{y} \\\\\\
     \text{slippage price}&=\underbrace{\frac{dx}{dy}}_{\text{Price ratio of exchange}}-\underbrace{\frac{x}{y}}_{\text{Price ratio before exchange}}=\frac{dx}{y}
-\end{aligned}
+\end{align\*}
 $$
 
 > From the equation above, we know that the greater the transaction volume, the greater the slippage and the greater the deviation from the actual price. Besides, from the Uniswap V2 code below, we know that
