@@ -32,7 +32,7 @@ What is slippage in AMM, and how does Uniswap V2 address this issue? Please illu
 > Since the change in token price is caused by the total movement of the entire current market, the Slippage in AMM refers to the difference between the expected price of a trade and the price at which the trade is executed. The final execution price vs. the intended execution price can be categorized as positive slippage, no slippage, or negative slippage.
 
 $$
-\begin{align*}
+\begin{aligned}
     \text{Uniswap v2}&
     \begin{cases}
         x\cdot y=k \\
@@ -41,7 +41,7 @@ $$
     \text{Exchange volumn}&\Rightarrow dy=\frac{y\cdot dx}{x+dx} \\
     \text{Price ratio of exchange}&\Rightarrow\frac{dx}{dy}=\frac{x+dx}{y} \\
     \text{slippage price}&=\underbrace{\frac{dx}{dy}}_{\text{Price ratio of exchange}}-\underbrace{\frac{x}{y}}_{\text{Price ratio before exchange}}=\frac{dx}{y}
-\end{align*}
+\end{aligned}
 $$
 
 > From the equation above, we know that the greater the transaction volume, the greater the slippage and the greater the deviation from the actual price. Besides, from the Uniswap V2 code below, we know that
@@ -223,8 +223,6 @@ Please provide the most profitable path among all possible swap paths and the co
 - tokenB->tokenD->tokenC->tokenA->tokenE->tokenB, tokenB balance=5.024399258538538
 
 ```python=
-import itertools
-
 def calculate_arbitrage(liquidity: dict, token_perms: list) -> list:
     arbitrage = list()
     for tokens in token_perms:
@@ -250,18 +248,6 @@ def calculate_arbitrage(liquidity: dict, token_perms: list) -> list:
             arbitrage.append([units, tokens])
     return sorted(arbitrage, reverse=True)
 
-
-def exchange_token(x: int, y: int, delta_x: float) -> float:
-    return float((997 * delta_x * y) / (1000 * x + 997 * delta_x))
-
-
-def get_token_list(token_dict: dict) -> list:
-    token = set()
-    for key, value in token_dict.items():
-        token.update(key)
-    return list(sorted(token))
-
-
 def get_token_permutations(token_list: list) -> list:
     perms = list()
     for i in range(3, len(token_list) + 1):
@@ -271,30 +257,4 @@ def get_token_permutations(token_list: list) -> list:
         ]  # only extract tokenB
         perms.extend(els)
     return perms
-
-
-if __name__ == "__main__":
-    liquidity = {
-        ("tokenA", "tokenB"): (17, 10),
-        ("tokenA", "tokenC"): (11, 7),
-        ("tokenA", "tokenD"): (15, 9),
-        ("tokenA", "tokenE"): (21, 5),
-        ("tokenB", "tokenC"): (36, 4),
-        ("tokenB", "tokenD"): (13, 6),
-        ("tokenB", "tokenE"): (25, 3),
-        ("tokenC", "tokenD"): (30, 12),
-        ("tokenC", "tokenE"): (10, 8),
-        ("tokenD", "tokenE"): (60, 25),
-    }
-
-    token_list = get_token_list(liquidity)
-    token_perms = get_token_permutations(token_list)
-    arbitrage_table = calculate_arbitrage(liquidity, token_perms)
-
-    # print path
-    for value, arbitrage in arbitrage_table:
-        print(*arbitrage, sep="->", end="")
-        print(f'->{arbitrage[0]}, {arbitrage[0]} ', end="")
-        print(f'balance={value}')
-
 ```
